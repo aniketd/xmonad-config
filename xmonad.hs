@@ -47,7 +47,7 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:web","3:code","4:vm","5:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:web","3:code","4:files","5:media"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -68,14 +68,17 @@ myManageHook = composeAll
     [ className =? "Chromium"       --> doShift "2:web"
     , className =? "Google-chrome"  --> doShift "2:web"
     , className =? "brave"          --> doShift "2:web"
+    , className =? "Tor Browser"    --> doShift "2:web"
     , className =? "Emacs"          --> doShift "3:code"
+    , className =? "Nautilus"       --> doShift "4:files"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "gpicview"       --> doFloat
     , className =? "MPlayer"        --> doFloat
-    , className =? "VirtualBox"     --> doShift "4:vm"
+    -- , className =? "VirtualBox"     --> doShift "4:vm"
+    , className =? "VirtualBox"     --> doShift "5:media"
     , className =? "Xchat"          --> doShift "5:media"
     , className =? "stalonetray"    --> doIgnore
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
