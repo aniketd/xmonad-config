@@ -9,7 +9,7 @@ PATH=$PATH:~/.cabal/bin:~/.xmonad/bin
 
 # Configure X
 xsetroot -cursor_name left_ptr &
-xrdb -merge ~/.Xdefaults &
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources #xrdb -merge ~/.Xresources &
 setxkbmap -option "ctrl:nocaps" &
 
 feh --bg-scale ~/Code/sysconf/blackhole.png &
@@ -19,31 +19,21 @@ xcompmgr -n &
 
 # Start the system tray
 tray &
+#stalonetray &
 
-# Start two terminals
-gnome-terminal &
+# Start a terminal
 gnome-terminal &
 
 # Start a browser
-google-chrome &
+#google-chrome &
+brave &
 
 # Start screensaver
 gnome-screensaver &
+#xscreensaver -no-splash &
 
 # Start sound server
 pulseaudio --start --log-target=syslog &
 
 gnome-session &
-
-## Set up an icon tray
-#stalonetray &
-#
-## Fire up apps
-#
-#xscreensaver -no-splash &
-#
-#if [ -x /usr/bin/nm-applet ] ; then
-#   nm-applet --sm-disable &
-#fi
-#
 #exec xmonad
