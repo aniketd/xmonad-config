@@ -47,7 +47,7 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:web","3:code","4:files","5:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:code","3:chat","4:web","5:files", "6:media"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -65,12 +65,14 @@ myWorkspaces = ["1:term","2:web","3:code","4:files","5:media"] ++ map show [6..9
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Chromium"       --> doShift "2:web"
-    , className =? "Google-chrome"  --> doShift "2:web"
-    , className =? "brave"          --> doShift "2:web"
-    , className =? "Tor Browser"    --> doShift "2:web"
-    , className =? "Emacs"          --> doShift "3:code"
-    , className =? "Nautilus"       --> doShift "4:files"
+    [ className =? "Gnome-terminal" --> doShift "1:term"
+    , className =? "Emacs"          --> doShift "2:code"
+    , className =? "Slack"          --> doShift "3:chat"
+    , className =? "Xchat"          --> doShift "3:chat"
+    , className =? "Google-chrome"  --> doShift "4:web"
+    , className =? "brave"          --> doShift "4:web"
+    , className =? "Tor Browser"    --> doShift "4:web"
+    , className =? "Nautilus"       --> doShift "5:files"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
@@ -78,8 +80,6 @@ myManageHook = composeAll
     , resource  =? "gpicview"       --> doFloat
     , className =? "MPlayer"        --> doFloat
     -- , className =? "VirtualBox"     --> doShift "4:vm"
-    , className =? "VirtualBox"     --> doShift "5:media"
-    , className =? "Xchat"          --> doShift "5:media"
     , className =? "stalonetray"    --> doIgnore
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
