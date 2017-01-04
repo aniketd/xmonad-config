@@ -16,6 +16,8 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Prompt
+import XMonad.Prompt.Shell
 import Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -43,11 +45,51 @@ myScreenshot = "screenshot"
 myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
 
 
+-- The configuration for XMonad.Prompt.Shell.shellPrompt, similar to dmenu with yeganesh
+--
+-- font — a String naming a font in the X format, eg. "-*-terminus-*-*-*-*-16-*-*-*-*-*-*-*"
+-- (default: "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*")
+--
+-- fgColor,bgColor — Strings in "#rrggbb" format, defining the fore- and background colours.
+-- (defaults: "#333333" and "#FFFFFF")
+-- 
+-- fgHLight,bgHLight — Strings as above, defining the highlight colour for a completion entry.
+-- (defaults: "#000000" and "#BBBBBB")
+--
+-- borderColor — a String as above, defining the border colour.
+-- (default: "#FFFFFF")
+--
+-- promptBorderWidth — the border width in pixels.
+-- (default: 1)
+--
+-- position — either Top or Bottom, the constructors of the XPPosition data type.
+-- (default: Bottom)
+--
+-- height — the height of the Prompt bar in pixels (make sure it’s large enough for your font!)
+-- (default: 18)
+--
+-- historySize — the number of history entries to save.
+-- (default: 256)
+--
+-- defaultText — a String defining the text initially in the Prompt box when it opens.
+-- (default: "")
+--
+-- autoComplete — a Maybe Int that controls the autocompletion behaviour.
+-- If Nothing, you must press Enter to select the entry.
+-- If Just x, it will select a unique entry after x microseconds.
+-- For example, Just 1000000 would wait 1 full second.
+-- (default: Nothing)
+--
+myXPConfig = defaultXPConfig { font = "-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*"
+                             , position = Bottom
+                             }
+
+
 ------------------------------------------------------------------------
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:chat","4:web","5:files", "6:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:media"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -67,11 +109,11 @@ myWorkspaces = ["1:term","2:code","3:chat","4:web","5:files", "6:media"] ++ map 
 myManageHook = composeAll
     [ className =? "Gnome-terminal" --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
-    , className =? "Slack"          --> doShift "3:chat"
-    , className =? "Xchat"          --> doShift "3:chat"
-    , className =? "Google-chrome"  --> doShift "4:web"
-    , className =? "brave"          --> doShift "4:web"
-    , className =? "Tor Browser"    --> doShift "4:web"
+    , className =? "Google-chrome"  --> doShift "3:web"
+    , className =? "brave"          --> doShift "3:web"
+    , className =? "Tor Browser"    --> doShift "3:web"
+    , className =? "Slack"          --> doShift "4:chat"
+    , className =? "Xchat"          --> doShift "4:chat"
     , className =? "Nautilus"       --> doShift "5:files"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
@@ -139,7 +181,7 @@ myBorderWidth = 1
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
-myModMask = mod1Mask
+myModMask = mod4Mask
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ----------------------------------------------------------------------
@@ -158,6 +200,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Use this to launch programs without a key binding.
   , ((modMask, xK_p),
      spawn myLauncher)
+
+  -- Spawn the shellPrompt using command specified by myLauncher.
+  -- Use this to launch programs without a key binding.
+  , ((modMask, xK_z),
+     shellPrompt myXPConfig)
 
   -- Take a selective screenshot using the command specified by mySelectScreenshot.
   , ((modMask .|. shiftMask, xK_p),
