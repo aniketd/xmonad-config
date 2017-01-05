@@ -42,7 +42,8 @@ myScreenshot = "screenshot"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
-myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+-- myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+myLauncher = "$(yeganesh -x -- -fn '-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
 
 
 -- The configuration for XMonad.Prompt.Shell.shellPrompt, similar to dmenu with yeganesh
@@ -80,7 +81,7 @@ myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso88
 -- For example, Just 1000000 would wait 1 full second.
 -- (default: Nothing)
 --
-myXPConfig = defaultXPConfig { font = "-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*"
+myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*"
                              , position = Bottom
                              }
 
