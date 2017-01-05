@@ -22,18 +22,18 @@ tray &
 #stalonetray &
 
 # Start a terminal
-gnome-terminal &
+#gnome-terminal & # moved away from gnome
 
 # Start a browser
 #google-chrome &
-brave &
+#brave &
 
 # Start screensaver
-gnome-screensaver &
+#gnome-screensaver &
 #xscreensaver -no-splash &
 
 # Start sound server
 pulseaudio --start --log-target=syslog &
 
-gnome-session &
-#exec xmonad
+#gnome-session &
+exec xmonad

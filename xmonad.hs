@@ -28,10 +28,12 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal = "/usr/bin/gnome-terminal"
+-- myTerminal = "/usr/bin/gnome-terminal"
+myTerminal = "/usr/bin/st -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:autohint=true' -e /usr/bin/tmux"
+-- /usr/bin/tmux -2 gives error 256 because st is already running in 256 color mode!
 
--- The command to lock the screen or show the screensaver.
-myScreensaver = "/usr/bin/gnome-screensaver-command --lock"
+-- -- The command to lock the screen or show the screensaver.
+-- myScreensaver = "/usr/bin/gnome-screensaver-command --lock"
 
 -- The command to lock the screen without any screensaver.
 myScreenLocker = "/usr/bin/slock"
@@ -84,7 +86,7 @@ myLauncher = "$(yeganesh -x -- -fn '-*-fantasque sans mono-*-r-normal-*-17-120-1
 -- For example, Just 1000000 would wait 1 full second.
 -- (default: Nothing)
 --
-myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*"
+myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-120-100-100-*-*-iso8859-*"
                              , position = Bottom
                              }
 
@@ -196,9 +198,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [ ((modMask .|. shiftMask, xK_Return),
      spawn $ XMonad.terminal conf)
 
-  -- Lock the screen using command specified by myScreensaver.
-  , ((modMask .|. controlMask, xK_l),
-     spawn myScreensaver)
+  -- -- Lock the screen using command specified by myScreensaver.
+  -- , ((modMask .|. controlMask, xK_l),
+  --    spawn myScreensaver)
 
   -- Lock the screen using command specified by myScreenLocker.
   , ((modMask .|. shiftMask, xK_l),
