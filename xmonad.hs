@@ -33,6 +33,9 @@ myTerminal = "/usr/bin/gnome-terminal"
 -- The command to lock the screen or show the screensaver.
 myScreensaver = "/usr/bin/gnome-screensaver-command --lock"
 
+-- The command to lock the screen without any screensaver.
+myScreenLocker = "/usr/bin/slock"
+
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
 mySelectScreenshot = "select-screenshot"
@@ -196,6 +199,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Lock the screen using command specified by myScreensaver.
   , ((modMask .|. controlMask, xK_l),
      spawn myScreensaver)
+
+  -- Lock the screen using command specified by myScreenLocker.
+  , ((modMask .|. shiftMask, xK_l),
+     spawn myScreenLocker)
 
   -- Spawn the launcher using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
