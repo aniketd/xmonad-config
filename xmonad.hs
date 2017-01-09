@@ -114,6 +114,7 @@ myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:media"] ++ map 
 --
 myManageHook = composeAll
     [ className =? "Gnome-terminal" --> doShift "1:term"
+    , className =? "st-256color"    --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"

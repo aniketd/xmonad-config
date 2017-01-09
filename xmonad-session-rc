@@ -18,7 +18,7 @@ feh --bg-scale ~/Code/sysconf/blackhole.png &
 xcompmgr -n &
 
 # Start the system tray
-tray &
+#tray &
 #stalonetray &
 
 # Start a terminal
@@ -33,7 +33,7 @@ tray &
 #xscreensaver -no-splash &
 
 # Start sound server
-pulseaudio --start --log-target=syslog &
+#pulseaudio --start --log-target=syslog &
 
 #gnome-session &
 exec xmonad
