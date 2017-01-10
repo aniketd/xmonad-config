@@ -17,6 +17,9 @@ feh --bg-scale ~/Code/sysconf/blackhole.png &
 # Start a window compositor. This ensures Google Chrome paints correctly.
 xcompmgr -n &
 
+# Start the DUNST notification daemon [its awesome!]
+dunst &
+
 # Start the system tray
 #tray &
 #stalonetray &
