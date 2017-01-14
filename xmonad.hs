@@ -95,7 +95,7 @@ myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-12
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:media"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:virtual"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -122,13 +122,13 @@ myManageHook = composeAll
     , className =? "Slack"          --> doShift "4:chat"
     , className =? "Xchat"          --> doShift "4:chat"
     , className =? "Nautilus"       --> doShift "5:files"
+    , className =? "VirtualBox"     --> doShift "6:virtual"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "gpicview"       --> doFloat
     , className =? "MPlayer"        --> doFloat
-    -- , className =? "VirtualBox"     --> doShift "4:vm"
     , className =? "stalonetray"    --> doIgnore
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
