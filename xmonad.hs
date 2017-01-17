@@ -95,7 +95,7 @@ myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-12
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:virtual"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:virtual", "7:tor"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -118,11 +118,11 @@ myManageHook = composeAll
     , className =? "Emacs"          --> doShift "2:code"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"
-    , className =? "Tor Browser"    --> doShift "3:web"
     , className =? "Slack"          --> doShift "4:chat"
     , className =? "Xchat"          --> doShift "4:chat"
     , className =? "Nautilus"       --> doShift "5:files"
     , className =? "VirtualBox"     --> doShift "6:virtual"
+    , className =? "Tor Browser"    --> doShift "7:tor"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
