@@ -12,7 +12,7 @@ xsetroot -cursor_name left_ptr &
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources #xrdb -merge ~/.Xresources &
 setxkbmap -option "ctrl:nocaps" &
 
-feh --bg-scale ~/Code/sysconf/blackhole.png &
+feh --bg-fill ~/Code/sysconf/blackhole.png &
 
 # Start a window compositor. This ensures Google Chrome paints correctly.
 xcompmgr -n &
