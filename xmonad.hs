@@ -40,16 +40,21 @@ myScreenLocker = "/usr/bin/slock"
 
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
-mySelectScreenshot = "select-screenshot"
+mySelectScreenshot = "/usr/bin/scrot -s 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
+-- does not work
 
 -- The command to take a fullscreen screenshot.
-myScreenshot = "screenshot"
+myScreenshot = "/usr/bin/scrot -m -c --delay 2 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
 
 -- The command to use as a launcher, to launch commands that don't have
 -- preset keybindings.
 -- myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
-myLauncher = "$(yeganesh -x -- -fn '-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+-- myLauncher = "$(yeganesh -x -- -fn '-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+-- this is defunct. take it out soon.
 
+-- The command to use as a editor, where the editor will always render in the respective xmonad-tab.
+-- myEditor = "emacsclient -c"
+-- not used
 
 -- The configuration for XMonad.Prompt.Shell.shellPrompt, similar to dmenu with yeganesh
 --
@@ -95,7 +100,7 @@ myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-12
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:chat","5:files", "6:virtual", "7:tor"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:code","3:web","4:tor","5:files", "6:virtual"] ++ map show [7..9]
 
 
 ------------------------------------------------------------------------
@@ -118,11 +123,11 @@ myManageHook = composeAll
     , className =? "Emacs"          --> doShift "2:code"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"
-    , className =? "Slack"          --> doShift "4:chat"
-    , className =? "Xchat"          --> doShift "4:chat"
+    , className =? "Slack"          --> doShift "3:web"
+    , className =? "Xchat"          --> doShift "3:web"
+    , className =? "Tor Browser"    --> doShift "4:tor"
     , className =? "Nautilus"       --> doShift "5:files"
     , className =? "VirtualBox"     --> doShift "6:virtual"
-    , className =? "Tor Browser"    --> doShift "7:tor"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
     , className =? "Steam"          --> doFloat
@@ -144,10 +149,10 @@ myManageHook = composeAll
 -- which denotes layout choice.
 --
 myLayout = avoidStruts (
+    tabbed shrinkText tabConfig |||
     ThreeColMid 1 (3/100) (1/2) |||
     Tall 1 (3/100) (1/2) |||
     Mirror (Tall 1 (3/100) (1/2)) |||
-    tabbed shrinkText tabConfig |||
     Full |||
     spiral (6/7)) |||
     noBorders (fullscreenFull Full)
@@ -199,6 +204,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [ ((modMask .|. shiftMask, xK_Return),
      spawn $ XMonad.terminal conf)
 
+  -- Start an emacsclient.  Editor to start is specified by myEditor variable.
+  -- , ((modMask .|. shiftMask, xK_e),
+  --    spawn "emacsclient -c")
+
   -- -- Lock the screen using command specified by myScreensaver.
   -- , ((modMask .|. controlMask, xK_l),
   --    spawn myScreensaver)
@@ -209,8 +218,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Spawn the launcher using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
-  , ((modMask, xK_p),
-     spawn myLauncher)
+  -- , ((modMask, xK_p),
+  --    spawn myLauncher)
 
   -- Spawn the shellPrompt using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
