@@ -121,6 +121,7 @@ myManageHook = composeAll
     [ className =? "Gnome-terminal" --> doShift "1:term"
     , className =? "st-256color"    --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
+    , className =? "Firefox"        --> doShift "3:web"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"
     , className =? "Slack"          --> doShift "3:web"
