@@ -121,6 +121,7 @@ myManageHook = composeAll
     [ className =? "Gnome-terminal" --> doShift "1:term"
     , className =? "st-256color"    --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
+    , className =? "Inox"           --> doShift "3:web"
     , className =? "Firefox"        --> doShift "3:web"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"
@@ -206,8 +207,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
      spawn $ XMonad.terminal conf)
 
   -- Start an emacsclient.  Editor to start is specified by myEditor variable.
-  -- , ((modMask .|. shiftMask, xK_e),
-  --    spawn "emacsclient -c")
+  , ((modMask .|. shiftMask, xK_e),
+     spawn "emacsclient -c")
 
   -- -- Lock the screen using command specified by myScreensaver.
   -- , ((modMask .|. controlMask, xK_l),

@@ -30,6 +30,10 @@ dunst &
 # Start a browser
 #google-chrome &
 #brave &
+inox &
+
+# Start the sync service
+megasync &
 
 # Start screensaver
 #gnome-screensaver &
