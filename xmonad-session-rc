@@ -33,7 +33,7 @@ dunst &
 #inox &
 
 # Start the sync service
-megasync &
+#megasync &
 
 # Start screensaver
 #gnome-screensaver &

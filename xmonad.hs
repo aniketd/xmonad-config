@@ -118,16 +118,17 @@ myWorkspaces = ["1:term","2:code","3:web","4:tor","5:files", "6:virtual"] ++ map
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Gnome-terminal" --> doShift "1:term"
-    , className =? "st-256color"    --> doShift "1:term"
+    [ className =? "st-256color"    --> doShift "1:term"
+    , className =? "Gnome-terminal" --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
+    , className =? "Evince"         --> doShift "3:web"
     , className =? "Inox"           --> doShift "3:web"
-    , className =? "qutebrowser"    --> doShift "3:web"
     , className =? "Firefox"        --> doShift "3:web"
     , className =? "Google-chrome"  --> doShift "3:web"
     , className =? "brave"          --> doShift "3:web"
     , className =? "Slack"          --> doShift "3:web"
     , className =? "Xchat"          --> doShift "3:web"
+    , className =? "qutebrowser"    --> doShift "4:tor"
     , className =? "Tor Browser"    --> doShift "4:tor"
     , className =? "Nautilus"       --> doShift "5:files"
     , className =? "VirtualBox"     --> doShift "6:virtual"
@@ -208,8 +209,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
      spawn $ XMonad.terminal conf)
 
   -- Start an emacsclient.  Editor to start is specified by myEditor variable.
-  , ((modMask .|. shiftMask, xK_e),
-     spawn "emacsclient -c")
+  -- , ((modMask .|. shiftMask, xK_e),
+  --    spawn "emacsclient -c")
 
   -- -- Lock the screen using command specified by myScreensaver.
   -- , ((modMask .|. controlMask, xK_l),
