@@ -36,7 +36,7 @@ myTerminal = "/usr/bin/st -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:au
 -- myScreensaver = "/usr/bin/gnome-screensaver-command --lock"
 
 -- The command to lock the screen without any screensaver.
-myScreenLocker = "/usr/bin/slock"
+myScreenLocker = "import -window root - | convert -blur 5x5 - /tmp/i3lock.png && /usr/bin/i3lock -i /tmp/i3lock.png"
 
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
@@ -119,18 +119,13 @@ myWorkspaces = ["1:term","2:code","3:web","4:tor","5:files", "6:virtual"] ++ map
 --
 myManageHook = composeAll
     [ className =? "st-256color"    --> doShift "1:term"
-    , className =? "Gnome-terminal" --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
-    , className =? "Evince"         --> doShift "3:web"
-    , className =? "Inox"           --> doShift "3:web"
+    , className =? "Chromium"       --> doShift "3:web"
     , className =? "Firefox"        --> doShift "3:web"
-    , className =? "Google-chrome"  --> doShift "3:web"
-    , className =? "brave"          --> doShift "3:web"
-    , className =? "Slack"          --> doShift "3:web"
-    , className =? "Xchat"          --> doShift "3:web"
+    -- , className =? "Inox"           --> doShift "3:web"
+    -- , className =? "brave"          --> doShift "3:web"
     , className =? "qutebrowser"    --> doShift "4:tor"
     , className =? "Tor Browser"    --> doShift "4:tor"
-    , className =? "Nautilus"       --> doShift "5:files"
     , className =? "VirtualBox"     --> doShift "6:virtual"
     , resource  =? "desktop_window" --> doIgnore
     , className =? "Galculator"     --> doFloat
