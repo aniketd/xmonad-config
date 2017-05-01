@@ -1,6 +1,7 @@
--- xmonad config used by Vic Fryzel
--- Author: Vic Fryzel
--- http://github.com/vicfryzel/xmonad-config
+-- ~/.xmonad/xmonad.hs
+--
+-- [https://github.com/vicfryzel/xmonad-config, modified]
+-- https://github.com/aniketd/dotfiles
 
 import System.IO
 import System.Exit
@@ -25,37 +26,48 @@ import qualified Data.Map        as M
 
 ------------------------------------------------------------------------
 -- Terminal
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
+-- The preferred terminal program,
+-- which is used in a binding below 
+-- and by certain contrib modules.
+-- NOTE: `/usr/bin/tmux -2` gives an `error 256` because `st` 
+--       is already running in `256-color` mode!
+-- `-f` - enforces the greatest, loveliest font known to mankind.
+-- `-e` - always starts with tmux multiplexing
 --
--- myTerminal = "/usr/bin/gnome-terminal"
 myTerminal = "/usr/bin/st -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:autohint=true' -e /usr/bin/tmux"
--- /usr/bin/tmux -2 gives error 256 because st is already running in 256 color mode!
 
--- -- The command to lock the screen or show the screensaver.
--- myScreensaver = "/usr/bin/gnome-screensaver-command --lock"
 
+------------------------------------------------------------------------
+-- Terminal
+-- Screen locker
 -- The command to lock the screen without any screensaver.
+-- `i3lock` is smaller and faster and gives better feedback than `slock`
+-- Using `image-magic` utils to capture screen and blur it to use as 
+-- locker background
+-- Takes a bit, around 7 seconds to finish
+--
 myScreenLocker = "import -window root - | convert -blur 5x5 - /tmp/i3lock.png && /usr/bin/i3lock -i /tmp/i3lock.png"
 
+
+------------------------------------------------------------------------
+-- Terminal
+-- Screenshot (with selection) -- NOT WORKING
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
+--
 mySelectScreenshot = "/usr/bin/scrot -s 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
--- does not work
 
+
+------------------------------------------------------------------------
+-- Terminal
+-- Screenshot (with delay)
 -- The command to take a fullscreen screenshot.
+--
 myScreenshot = "/usr/bin/scrot -m -c --delay 2 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
 
--- The command to use as a launcher, to launch commands that don't have
--- preset keybindings.
--- myLauncher = "$(yeganesh -x -- -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
--- myLauncher = "$(yeganesh -x -- -fn '-*-fantasque sans mono-*-r-normal-*-17-120-100-100-*-*-iso8859-*' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
--- this is defunct. take it out soon.
 
--- The command to use as a editor, where the editor will always render in the respective xmonad-tab.
--- myEditor = "emacsclient -c"
--- not used
-
+------------------------------------------------------------------------
+--
 -- The configuration for XMonad.Prompt.Shell.shellPrompt, similar to dmenu with yeganesh
 --
 -- font — a String naming a font in the X format, eg. "-*-terminus-*-*-*-*-16-*-*-*-*-*-*-*"
@@ -100,7 +112,7 @@ myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-12
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:code","3:web","4:tor","5:files", "6:virtual"] ++ map show [7..9]
+myWorkspaces = ["1:term","2:emacs","3:web","4:tor","5:virt"] ++ map show [6..9]
 
 
 ------------------------------------------------------------------------
@@ -121,19 +133,11 @@ myManageHook = composeAll
     [ className =? "st-256color"    --> doShift "1:term"
     , className =? "Emacs"          --> doShift "2:code"
     , className =? "Chromium"       --> doShift "3:web"
+    , className =? "QupZilla"       --> doShift "3:web"
     , className =? "Firefox"        --> doShift "3:web"
-    -- , className =? "Inox"           --> doShift "3:web"
-    -- , className =? "brave"          --> doShift "3:web"
-    , className =? "qutebrowser"    --> doShift "4:tor"
     , className =? "Tor Browser"    --> doShift "4:tor"
-    , className =? "VirtualBox"     --> doShift "6:virtual"
-    , resource  =? "desktop_window" --> doIgnore
-    , className =? "Galculator"     --> doFloat
+    , className =? "VirtualBox"     --> doShift "5:virt"
     , className =? "Steam"          --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "gpicview"       --> doFloat
-    , className =? "MPlayer"        --> doFloat
-    , className =? "stalonetray"    --> doIgnore
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
 
@@ -194,31 +198,19 @@ myBorderWidth = 1
 --
 myModMask = mod4Mask
 
+
+------------------------------------------------------------------------
+-- Custom key configuration
+--
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-  ----------------------------------------------------------------------
-  -- Custom key bindings
-  --
 
   -- Start a terminal.  Terminal to start is specified by myTerminal variable.
   [ ((modMask .|. shiftMask, xK_Return),
      spawn $ XMonad.terminal conf)
 
-  -- Start an emacsclient.  Editor to start is specified by myEditor variable.
-  -- , ((modMask .|. shiftMask, xK_e),
-  --    spawn "emacsclient -c")
-
-  -- -- Lock the screen using command specified by myScreensaver.
-  -- , ((modMask .|. controlMask, xK_l),
-  --    spawn myScreensaver)
-
   -- Lock the screen using command specified by myScreenLocker.
   , ((modMask .|. shiftMask, xK_l),
      spawn myScreenLocker)
-
-  -- Spawn the launcher using command specified by myLauncher.
-  -- Use this to launch programs without a key binding.
-  -- , ((modMask, xK_p),
-  --    spawn myLauncher)
 
   -- Spawn the shellPrompt using command specified by myLauncher.
   -- Use this to launch programs without a key binding.
@@ -344,6 +336,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Toggle the status bar gap.
   -- TODO: update this binding with avoidStruts, ((modMask, xK_b),
 
+  ---------------------------------------------------------------
+  -- These setting should change for every new system
+  --
+  -- Enfore dual monitor
+  , ((modMask, xK_comma),
+     spawn "xrandr --output eDP1 --primary --below DP1 --output DP1 --auto")
+
+  -- Enfore single monitor
+  , ((modMask, xK_period),
+     spawn "xrandr --output DP1 --off --output eDP1 --auto")
+
+  ---------------------------------------------------------------
   -- Quit xmonad.
   , ((modMask .|. shiftMask, xK_q),
      io (exitWith ExitSuccess))
@@ -351,6 +355,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Restart xmonad.
   , ((modMask, xK_q),
      restart "xmonad" True)
+
+  -- Recompile and restart xmonad.
+  , ((modMask .|. shiftMask .|. controlMask, xK_q),
+     spawn "xmonad --recompile && xmonad --restart")
   ]
   ++
 

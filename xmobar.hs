@@ -3,7 +3,7 @@ Config {
    -- appearance
      font =         "xft:Fantasque Sans Mono:size=9:normal:antialias=true"
    , bgColor =      "black"
-   , fgColor =      "#646464"
+   , fgColor =      "#AAAAAA"
    , position =     Top
    , border =       BottomB
    , borderColor =  "#646464"
@@ -12,7 +12,8 @@ Config {
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
    -- , template = "%battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %RJTT% | %date% || %kbd% "
-   , template = " %StdinReader% }{ | %multicpu% | %dynnetwork% | %memory% ||| %coretemp% | %battery% ||| %RJTT% ||| %date% "
+   -- , template = " %StdinReader% }{ | %multicpu% | %dynnetwork% | %memory% ||| %coretemp% | %battery% ||| %RJTT% ||| %date% "
+   , template = " %StdinReader% }{ | %locks% | %multicpu% | %dynnetwork% | %memory% ||| %coretemp% | %battery% ||| %date% "
 
    -- general behavior
    , lowerOnStart =     True    -- send to bottom of window stack on start
@@ -42,65 +43,76 @@ Config {
         [ Run StdinReader
 
         -- weather monitor
-	, Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
+	    , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
                              ] 36000
 
         -- network activity monitor (dynamic interface resolution)
-        , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+        , Run DynNetwork     [ "--template" , "<dev>: ↑<txbar> ↓<rxbar>"
                              , "--Low"      , "1000"       -- units: B/s
                              , "--High"     , "5000"       -- units: B/s
-                             , "--low"      , "darkgreen"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "darkred"
+                             , "--low"      , "lightgreen"
+                             , "--normal"   , "lightorange"
+                             , "--high"     , "lightred"
                              ] 10
 
         -- cpu activity monitor
-        , Run MultiCpu       [ "--template" , "Cpu: <total0>%|<total1>%"
+        , Run MultiCpu       [ "--template" , "Cpu: <bar>"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
-                             , "--low"      , "darkgreen"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "darkred"
+                             , "--low"      , "lightgreen"
+                             , "--normal"   , "lightorange"
+                             , "--high"     , "lightred"
                              ] 10
 
         -- cpu core temperature monitor
-        , Run CoreTemp       [ "--template" , "Temp: <core0>°C|<core1>°C"
+        , Run CoreTemp       [ "--template" , "Temp:<core0>°C|<core1>°C"
                              , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
-                             , "--low"      , "darkgreen"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "darkred"
+                             , "--low"      , "lightgreen"
+                             , "--normal"   , "lightorange"
+                             , "--high"     , "lightred"
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"Mem: <usedratio>%"
+        , Run Memory         [ "--template" ,"Mem: <usedratio>% (<cache>M)"
                              , "--Low"      , "20"        -- units: %
-                             , "--High"     , "90"        -- units: %
-                             , "--low"      , "darkgreen"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "darkred"
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "lightgreen"
+                             , "--normal"   , "lightorange"
+                             , "--high"     , "lightred"
                              ] 10
 
         -- battery monitor
-        , Run Battery        [ "--template" , "Batt: <acstatus>"
+        , Run Battery        [ "--template" , "Batt:<acstatus>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
-                             , "--low"      , "darkred"
-                             , "--normal"   , "darkorange"
-                             , "--high"     , "darkgreen"
+                             , "--low"      , "lightred"
+                             , "--normal"   , "lightorange"
+                             , "--high"     , "lightgreen"
 
                              , "--" -- battery specific options
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
                                        -- AC "on" status
-                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       , "-O"	, "<fc=#00FF00>Charging</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#006000>Charged</fc>"
+                                       , "-i"	, "<fc=#FF0000>Charged</fc>"
                              ] 50
+
+        -- volume monitor -- NOT WORKING
+        -- , Run Volume "default" "Master" [ "--template" , "Vol: <volumebar> <status>"
+        --                                 ] 50
+
+        -- brightness monitor
+        , Run Brightness     [ "--template", "<bar>"
+                             ] 60
+
+        -- capslock monitor
+        , Run Locks
 
         -- time and date indicator 
         --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#ABABAB>%F (%a) %T</fc>" "date" 10
+        , Run Date           "<fc=#FFFFFF>%F (%a) %T</fc>" "date" 10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
