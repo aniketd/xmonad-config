@@ -74,7 +74,7 @@ Config {
                              ] 50
                           
         -- memory usage monitor
-        , Run Memory         [ "--template" ,"Mem: <usedratio>% (<cache>M)"
+        , Run Memory         [ "--template" ,"Mem: <usedbar>% (<cache>M)"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "lightgreen"

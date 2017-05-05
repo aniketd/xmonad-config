@@ -34,7 +34,7 @@ import qualified Data.Map        as M
 -- `-f` - enforces the greatest, loveliest font known to mankind.
 -- `-e` - always starts with tmux multiplexing
 --
-myTerminal = "/usr/bin/st -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:autohint=true' -e /usr/bin/tmux"
+myTerminal = "/usr/bin/stterm -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:autohint=true' -e /usr/bin/tmux"
 
 
 ------------------------------------------------------------------------
@@ -130,14 +130,22 @@ myWorkspaces = ["1:term","2:emacs","3:web","4:tor","5:virt"] ++ map show [6..9]
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "st-256color"    --> doShift "1:term"
-    , className =? "Emacs"          --> doShift "2:code"
-    , className =? "Chromium"       --> doShift "3:web"
-    , className =? "QupZilla"       --> doShift "3:web"
-    , className =? "Firefox"        --> doShift "3:web"
-    , className =? "Tor Browser"    --> doShift "4:tor"
-    , className =? "VirtualBox"     --> doShift "5:virt"
-    , className =? "Steam"          --> doFloat
+    [ className =? "st-256color"      --> doShift "1:term"
+
+    , className =? "emacs"            --> doShift "2:code"
+    , className =? "Emacs"            --> doShift "2:code"
+    , className =? "Emacs24"          --> doShift "2:code"
+
+    , className =? "Chromium"         --> doShift "3:web"
+    , className =? "Chromium-browser" --> doShift "3:web"
+
+    , className =? "QupZilla"         --> doShift "3:web"
+    , className =? "Firefox"          --> doShift "3:web"
+    , className =? "Tor Browser"      --> doShift "4:tor"
+
+    , className =? "VirtualBox"       --> doShift "5:virt"
+
+    , className =? "Steam"            --> doFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
 
 
@@ -341,11 +349,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --
   -- Enfore dual monitor
   , ((modMask, xK_comma),
-     spawn "xrandr --output eDP1 --primary --below DP1 --output DP1 --auto")
+     spawn "xrandr --output eDP-1 --primary --below DP-1 --output DP-1 --auto")
 
   -- Enfore single monitor
   , ((modMask, xK_period),
-     spawn "xrandr --output DP1 --off --output eDP1 --auto")
+     spawn "xrandr --output DP-1 --off --output eDP-1 --auto")
 
   ---------------------------------------------------------------
   -- Quit xmonad.
