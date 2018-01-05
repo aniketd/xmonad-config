@@ -1,3 +1,5 @@
+This is out-of-date now. I will soon be consolidating my configuration for NixOS
+
 # xmonad-config
 xmonad-config is the [xmonad](http://xmonad.org/) configuration used by Vic Fryzel.
 
