@@ -6,10 +6,12 @@
 import System.IO
 import System.Exit
 import XMonad
+import XMonad.Config
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
+import XMonad.Layout.Decoration
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spiral
@@ -27,9 +29,9 @@ import qualified Data.Map        as M
 ------------------------------------------------------------------------
 -- Terminal
 -- The preferred terminal program,
--- which is used in a binding below 
+-- which is used in a binding below
 -- and by certain contrib modules.
--- NOTE: `/usr/bin/tmux -2` gives an `error 256` because `st` 
+-- NOTE: `/usr/bin/tmux -2` gives an `error 256` because `st`
 --       is already running in `256-color` mode!
 -- `-f` - enforces the greatest, loveliest font known to mankind.
 -- `-e` - always starts with tmux multiplexing
@@ -42,7 +44,7 @@ myTerminal = "/usr/bin/stterm -f 'Fantasque Sans Mono:pixelsize=14:antialias=tru
 -- Screen locker
 -- The command to lock the screen without any screensaver.
 -- `i3lock` is smaller and faster and gives better feedback than `slock`
--- Using `image-magic` utils to capture screen and blur it to use as 
+-- Using `image-magic` utils to capture screen and blur it to use as
 -- locker background
 -- Takes a bit, around 7 seconds to finish
 --
@@ -55,7 +57,8 @@ myScreenLocker = "import -window root - | convert -blur 5x5 - /tmp/i3lock.png &&
 -- The command to take a selective screenshot, where you select
 -- what you'd like to capture on the screen.
 --
-mySelectScreenshot = "/usr/bin/scrot -s 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
+-- mySelectScreenshot = "/usr/bin/scrot -s 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/scrots/'"
+mySelectScreenshot = "/usr/bin/scrot -s"
 
 
 ------------------------------------------------------------------------
@@ -75,7 +78,7 @@ myScreenshot = "/usr/bin/scrot -m -c --delay 2 'scrot_%Y-%m-%d_%H:%M:%S_$wx$h.pn
 --
 -- fgColor,bgColor — Strings in "#rrggbb" format, defining the fore- and background colours.
 -- (defaults: "#333333" and "#FFFFFF")
--- 
+--
 -- fgHLight,bgHLight — Strings as above, defining the highlight colour for a completion entry.
 -- (defaults: "#000000" and "#BBBBBB")
 --
@@ -112,7 +115,7 @@ myXPConfig = defaultXPConfig { font = "-*-fantasque sans mono-*-r-normal-*-14-12
 -- Workspaces
 -- The default number of workspaces (virtual screens) and their names.
 --
-myWorkspaces = ["1:term","2:emacs","3:web","4:tor","5:virt"] ++ map show [6..9]
+myWorkspaces = ["1:term","2:emacs","3:web","4:virt"] ++ map show [5..9]
 
 
 ------------------------------------------------------------------------
@@ -131,6 +134,8 @@ myWorkspaces = ["1:term","2:emacs","3:web","4:tor","5:virt"] ++ map show [6..9]
 --
 myManageHook = composeAll
     [ className =? "st-256color"      --> doShift "1:term"
+    , className =? "stterm-256color"  --> doShift "1:term"
+    , className =? "Alacritty"        --> doShift "1:term"
 
     , className =? "emacs"            --> doShift "2:code"
     , className =? "Emacs"            --> doShift "2:code"
@@ -138,12 +143,17 @@ myManageHook = composeAll
 
     , className =? "Chromium"         --> doShift "3:web"
     , className =? "Chromium-browser" --> doShift "3:web"
-
+    , className =? "Google-chrome"    --> doShift "3:web"
     , className =? "QupZilla"         --> doShift "3:web"
     , className =? "Firefox"          --> doShift "3:web"
-    , className =? "Tor Browser"      --> doShift "4:tor"
+    , className =? "Tor Browser"      --> doShift "3:web"
 
-    , className =? "VirtualBox"       --> doShift "5:virt"
+    -- , className =? "Rambox"           --> doShift "4:chat"
+    -- , className =? "Slack"            --> doShift "4:chat"
+    -- , className =? "HipChat"          --> doShift "4:chat"
+    -- , className =? "skypeforlinux"    --> doShift "4:chat"
+
+    , className =? "VirtualBox"       --> doShift "4:virt"
 
     , className =? "Steam"            --> doFloat
     , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
@@ -235,27 +245,27 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Mute volume.
   , ((0, xF86XK_AudioMute),
-     spawn "amixer -q set Master toggle")
+     spawn "amixer -D pulse sset Master toggle")
 
   -- Decrease volume.
   , ((0, xF86XK_AudioLowerVolume),
-     spawn "amixer -q set Master 10%-")
+     spawn "amixer -D pulse sset Master 10%-")
 
   -- Increase volume.
   , ((0, xF86XK_AudioRaiseVolume),
-     spawn "amixer -q set Master 10%+")
- 
+     spawn "amixer -D pulse sset Master 10%+")
+
   -- Mute volume.
   , ((modMask .|. controlMask, xK_m),
-     spawn "amixer -q set Master toggle")
+     spawn "amixer -D pulse sset Master toggle")
 
   -- Decrease volume.
   , ((modMask .|. controlMask, xK_j),
-     spawn "amixer -q set Master 10%-")
+     spawn "amixer -D pulse sset Master 10%-")
 
   -- Increase volume.
   , ((modMask .|. controlMask, xK_k),
-     spawn "amixer -q set Master 10%+")
+     spawn "amixer -D pulse sset Master 10%+")
 
   -- Audio previous.
   , ((0, 0x1008FF16),
@@ -348,12 +358,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- These setting should change for every new system
   --
   -- Enfore dual monitor
-  , ((modMask, xK_comma),
-     spawn "xrandr --output eDP-1 --primary --below DP-1 --output DP-1 --auto")
+  , ((modMask .|. shiftMask, xK_comma),
+     spawn "xrandr --output eDP1 --auto --output HDMI1 --auto --above eDP1")
 
   -- Enfore single monitor
-  , ((modMask, xK_period),
-     spawn "xrandr --output DP-1 --off --output eDP-1 --auto")
+  , ((modMask .|. shiftMask, xK_period),
+     spawn "xrandr --output eDP1 --auto --output HDMI1 --off")
 
   ---------------------------------------------------------------
   -- Quit xmonad.
@@ -366,7 +376,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
   -- Recompile and restart xmonad.
   , ((modMask .|. shiftMask .|. controlMask, xK_q),
-     spawn "xmonad --recompile && xmonad --restart")
+     spawn "xmonad-session --recompile && xmonad-session --restart")
   ]
   ++
 

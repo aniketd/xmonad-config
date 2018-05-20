@@ -13,21 +13,23 @@ xsetroot -cursor_name left_ptr &
 setxkbmap -option "ctrl:nocaps" &
 
 # Set conditional xrandr output in case of multi-head setup
-if [ -n "$(xrandr -q | grep ' connected' | grep '^DP1')" ]
+if [ -n "$(xrandr -q | grep ' connected' | grep '^HDMI1')" ]
 then
-    xrandr --output eDP1 --auto --output DP1 --auto --above eDP1
+    xrandr --output eDP1 --auto --output HDMI1 --auto --above eDP1
 else
-    xrandr --output eDP1 --auto --output DP1 --off
+    xrandr --output eDP1 --auto --output HDMI1 --off
 fi
 
 # Set the background wallpaper
-feh --bg-fill ~/Code/sysconf/blackhole.png &
+#feh --bg-fill ~/Code/sysconf/blackhole.png &
+redshift &
+feh --bg-fill /home/aniketd/Code/sysconf/fsf-wallpaper.jpg &
 
 # Start a window compositor. This ensures Google Chrome paints correctly.
-xcompmgr -n &
+#xcompmgr -n &
 
 # Start the DUNST notification daemon [its awesome!]
-dunst &
+#dunst &
 
 # Start the system tray
 #tray &
@@ -36,4 +38,4 @@ dunst &
 # Start sound server
 #pulseaudio --start --log-target=syslog &
 
-exec xmonad
+#exec xmonad-session

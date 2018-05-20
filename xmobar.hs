@@ -1,4 +1,4 @@
-Config { 
+Config {
 
    -- appearance
      font =         "xft:Fantasque Sans Mono:size=9:normal:antialias=true"
@@ -37,14 +37,14 @@ Config {
    --   The --template option controls how the plugin is displayed. Text
    --   color can be set by enclosing in <fc></fc> tags. For more details
    --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
-   , commands = 
+   , commands =
 
         -- StdinReader
         [ Run StdinReader
 
         -- weather monitor
-	    , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
-                             ] 36000
+        -- , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
+        --                      ] 36000
 
         -- network activity monitor (dynamic interface resolution)
         , Run DynNetwork     [ "--template" , "<dev>: ↑<txbar> ↓<rxbar>"
@@ -72,7 +72,7 @@ Config {
                              , "--normal"   , "lightorange"
                              , "--high"     , "lightred"
                              ] 50
-                          
+
         -- memory usage monitor
         , Run Memory         [ "--template" ,"Mem: <usedbar>% (<cache>M)"
                              , "--Low"      , "20"        -- units: %
@@ -103,20 +103,20 @@ Config {
         -- , Run Volume "default" "Master" [ "--template" , "Vol: <volumebar> <status>"
         --                                 ] 50
 
-        -- brightness monitor
-        , Run Brightness     [ "--template", "<bar>"
-                             ] 60
+        -- -- brightness monitor
+        -- , Run Brightness     [ "--template", "<bar>"
+        --                      ] 60
 
-        -- capslock monitor
-        , Run Locks
+        -- -- capslock monitor
+        -- , Run Locks
 
-        -- time and date indicator 
+        -- time and date indicator
         --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fc=#FFFFFF>%F (%a) %T</fc>" "date" 10
+        , Run Date           "<action=`gsimplecal`><fc=#FFFFFF>%F (%a) %T</fc></action>" "date" 600
 
-        -- keyboard layout indicator
-        , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
-                             , ("us"         , "<fc=#8B0000>US</fc>")
-                             ]
+        -- -- keyboard layout indicator
+        -- , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
+        --                      , ("us"         , "<fc=#8B0000>US</fc>")
+        --                      ]
         ]
    }
