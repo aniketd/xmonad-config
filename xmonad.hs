@@ -140,6 +140,7 @@ myManageHook = composeAll
     , className =? "emacs"            --> doShift "2:code"
     , className =? "Emacs"            --> doShift "2:code"
     , className =? "Emacs24"          --> doShift "2:code"
+    , className =? "Emacs25"          --> doShift "2:code"
 
     , className =? "Chromium"         --> doShift "3:web"
     , className =? "Chromium-browser" --> doShift "3:web"
@@ -359,11 +360,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --
   -- Enfore dual monitor
   , ((modMask .|. shiftMask, xK_comma),
-     spawn "xrandr --output eDP1 --auto --output HDMI1 --auto --above eDP1")
+     spawn "xrandr --output eDP-1 --auto --output HDMI-1 --auto --above eDP1")
 
   -- Enfore single monitor
   , ((modMask .|. shiftMask, xK_period),
-     spawn "xrandr --output eDP1 --auto --output HDMI1 --off")
+     spawn "xrandr --output eDP-1 --auto --output HDMI-1 --off")
 
   ---------------------------------------------------------------
   -- Quit xmonad.
