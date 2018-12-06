@@ -11,15 +11,16 @@ Config {
    -- layout
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
+
    -- , template = "%battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %RJTT% | %date% || %kbd% "
    -- , template = " %StdinReader% }{ | %multicpu% | %dynnetwork% | %memory% ||| %coretemp% | %battery% ||| %RJTT% ||| %date% "
-   , template = " %StdinReader% }{ | %locks% | %multicpu% | %dynnetwork% | %memory% ||| %coretemp% | %battery% ||| %date% "
+   , template = " %StdinReader% }{ | %coretemp% | %multicpu% | %memory% |         | %dynnetwork% | %battery% |         | %date% "
 
    -- general behavior
    , lowerOnStart =     True    -- send to bottom of window stack on start
    , hideOnStart =      False   -- start with window unmapped (hidden)
    , allDesktops =      True    -- show on all desktops
-   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , overrideRedirect = False   -- set the Override Redirect flag (Xlib)
    , pickBroadest =     False   -- choose widest display (multi-monitor)
    , persistent =       True    -- enable/disable hiding (True = disabled)
 
@@ -41,10 +42,6 @@ Config {
 
         -- StdinReader
         [ Run StdinReader
-
-        -- weather monitor
-        -- , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
-        --                      ] 36000
 
         -- network activity monitor (dynamic interface resolution)
         , Run DynNetwork     [ "--template" , "<dev>: ↑<txbar> ↓<rxbar>"
@@ -83,10 +80,10 @@ Config {
                              ] 10
 
         -- battery monitor
-        , Run Battery        [ "--template" , "Batt:<acstatus>"
+        , Run Battery        [ "--template" , "Battery: <acstatus>"
                              , "--Low"      , "10"        -- units: %
-                             , "--High"     , "80"        -- units: %
-                             , "--low"      , "lightred"
+                             , "--High"     , "70"        -- units: %
+                             , "--low"      , "lightorange"
                              , "--normal"   , "lightorange"
                              , "--high"     , "lightgreen"
 
@@ -94,10 +91,14 @@ Config {
                                        -- discharging status
                                        , "-o"	, "<left>% (<timeleft>)"
                                        -- AC "on" status
-                                       , "-O"	, "<fc=#00FF00>Charging</fc>"
+                                       , "-O"	, "<fc=#FFFF00>Charging</fc>"
                                        -- charged status
-                                       , "-i"	, "<fc=#FF0000>Charged</fc>"
+                                       , "-i"	, "<fc=#0000FF>Charged</fc>"
                              ] 50
+
+        -- time and date indicator
+        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date           "<action=`gsimplecal`><fc=#FFFFFF>%F (%a) %T</fc></action>" "date" 600
 
         -- volume monitor -- NOT WORKING
         -- , Run Volume "default" "Master" [ "--template" , "Vol: <volumebar> <status>"
@@ -110,13 +111,14 @@ Config {
         -- -- capslock monitor
         -- , Run Locks
 
-        -- time and date indicator
-        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<action=`gsimplecal`><fc=#FFFFFF>%F (%a) %T</fc></action>" "date" 600
-
         -- -- keyboard layout indicator
         -- , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
         --                      , ("us"         , "<fc=#8B0000>US</fc>")
         --                      ]
+
+        -- weather monitor
+        -- , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>°C | <fc=#4682B4><rh></fc>% | <fc=#4682B4><pressure></fc>hPa"
+        --                      ] 36000
+
         ]
    }

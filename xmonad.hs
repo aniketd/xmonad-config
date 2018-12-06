@@ -36,7 +36,8 @@ import qualified Data.Map        as M
 -- `-f` - enforces the greatest, loveliest font known to mankind.
 -- `-e` - always starts with tmux multiplexing
 --
-myTerminal = "/usr/bin/stterm -f 'Fantasque Sans Mono:pixelsize=14:antialias=true:autohint=true' -e /usr/bin/tmux"
+--myTerminal = "/usr/bin/stterm -f 'Fantasque Sans Mono:pixelsize=18:antialias=true:autohint=true' -e /usr/bin/tmux"
+myTerminal = "/home/aniketd/.local/bin/alacritty"
 
 
 ------------------------------------------------------------------------
@@ -360,7 +361,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --
   -- Enfore dual monitor
   , ((modMask .|. shiftMask, xK_comma),
-     spawn "xrandr --output eDP-1 --auto --output HDMI-1 --auto --above eDP1")
+     spawn "xrandr --output eDP-1 --auto --output HDMI-1 --auto --above eDP-1")
 
   -- Enfore single monitor
   , ((modMask .|. shiftMask, xK_period),
